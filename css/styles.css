@@ -1,7 +1,14 @@
 body {
     box-sizing: border-box;
+    max-width: 1000px;
+    margin: 50px auto;
 }
 
 *, ::before, ::after {
     box-sizing: inherit;
+}
+
+canvas {
+    width: 100%;
+    border: 1px black solid;
 }
