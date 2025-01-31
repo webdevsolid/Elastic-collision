@@ -6,20 +6,13 @@
         const canvasX = canvas.width = window.innerWidth;
         const canvasY = canvas.height = window.innerHeight;
 
-        let collision = 0;
-        
         const calculateColision = (object, otherObjects) => {
-            
-            const v1Initial = object.velocityX;
-            const v2Initial = otherObjects.velocityX;
 
-            // Obliczenie prędkości końcowych
-            object.velocityX =
-                ((object.mass - otherObjects.mass) * v1Initial + 2 * otherObjects.mass * v2Initial) /
-                (object.mass + otherObjects.mass);
-            otherObjects.velocityX =
-                ((otherObjects.mass - object.mass) * v2Initial + 2 * object.mass * v1Initial) /
-                (object.mass + otherObjects.mass);
+            const {mass: m1, velocityX: v1} = object;
+            const {mass: m2, velocityX: v2} = otherObjects;
+
+           object.velocityX = ((m1 - m2) * v1 + 2 * m2 * v2) / (m1 + m2);
+           otherObjects.velocityX = ((m2 - m1) * v2 + 2 * m1 * v1) / (m1 + m2);
         }
 
         class Object {
@@ -29,6 +22,7 @@
                 this.mass = mass;
                 this.velocityX = velocityX;
                 this.color = color;
+                this.direction = velocityX > 0 ? true : false;
             }
             update() {
                 if (this.x + 100 >= canvasX || this.x <= 0) {
@@ -48,6 +42,7 @@
                         calculateColision(this, objects[i]);
                     }
                 }
+        
                 this.x += this.velocityX;
             }
             draw(crc) {
@@ -57,7 +52,7 @@
             }
         }
 
-        let objects = [new Object(1, 1, 5, 'red'), new Object(canvasX - 100 - 1, 3, -7, 'blue')];
+        let objects = [new Object(1, 1, 3, 'red'), new Object(canvasX - 100 - 1, 5, -10, 'blue')];
 
         let time = 0;
         let fps = 1000 / 1000;
